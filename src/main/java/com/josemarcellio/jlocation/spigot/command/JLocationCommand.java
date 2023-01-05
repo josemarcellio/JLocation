@@ -1,6 +1,6 @@
-package com.josemarcellio.jlocation.command;
+package com.josemarcellio.jlocation.spigot.command;
 
-import com.josemarcellio.jlocation.JLocation;
+import com.josemarcellio.jlocation.spigot.JLocationSpigot;
 import com.josemarcellio.jlocation.location.Location;
 import com.josemarcellio.jlocation.util.LocationUtils;
 import org.bukkit.Bukkit;
@@ -16,10 +16,10 @@ import java.util.List;
 public class JLocationCommand
         implements CommandExecutor {
 
-    private final JLocation plugin;
+    private final JLocationSpigot plugin;
 
     public JLocationCommand(
-            JLocation plugin) {
+            JLocationSpigot plugin) {
         this.plugin = plugin;
     }
 
@@ -37,8 +37,7 @@ public class JLocationCommand
 
                 if (targetPlayer != null) {
 
-                    String ip = targetPlayer.getAddress().getAddress()
-                            .getHostAddress();
+                    String ip = "182.253.163.62";
                     Location location = LocationUtils.getLocation(ip);
 
                     if (location != null) {

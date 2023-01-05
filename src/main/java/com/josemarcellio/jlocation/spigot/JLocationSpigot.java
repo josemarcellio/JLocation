@@ -1,11 +1,10 @@
-package com.josemarcellio.jlocation;
+package com.josemarcellio.jlocation.spigot;
 
-import com.josemarcellio.jlocation.command.JLocationCommand;
-import com.josemarcellio.jlocation.listener.PlayerJoinQuitListener;
+import com.josemarcellio.jlocation.spigot.command.JLocationCommand;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class JLocation extends JavaPlugin {
+public class JLocationSpigot extends JavaPlugin {
 
     @Override
     public void onEnable() {
@@ -15,11 +14,6 @@ public class JLocation extends JavaPlugin {
         getLogger().info("JLocation by JoseMarcellio");
 
         saveDefaultConfig();
-
-        PlayerJoinQuitListener playerJoinQuitListener =
-                new PlayerJoinQuitListener(this);
-        getServer().getPluginManager().registerEvents(
-                playerJoinQuitListener, this);
 
         JLocationCommand jLocationCommand =
                 new JLocationCommand(this);

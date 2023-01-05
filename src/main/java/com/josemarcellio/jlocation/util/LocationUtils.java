@@ -47,6 +47,7 @@ public class LocationUtils {
         return null;
     }
 
+    @SuppressWarnings("deprecation")
     private static Location getLocationFromResponse(
             String response) {
 
