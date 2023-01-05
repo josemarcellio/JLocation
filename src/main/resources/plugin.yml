@@ -1,0 +1,8 @@
+name: JLocation
+main: com.josemarcellio.jlocation.JLocation
+version: 1.0
+author: JoseMarcellio
+description: Simple plugin to track player location
+commands:
+  jlocation:
+    aliases: []

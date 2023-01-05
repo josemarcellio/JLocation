@@ -1,0 +1,18 @@
+#{city}, {as}, {as_name}, {country}, {region_name}
+#{isp}, {lat}, {lon}, {ip}
+JoinQuit:
+  Enable: false
+  Join-Message: "&e{city}, {country} &7> &e{player} join to the server"
+  Quit-Message: "&c{city}, {country} &7> &c{player} quit from the server"
+
+Messages:
+  - ""
+  - "&6&lJLocation &7> &e{player} / {ip}"
+  - "&6&lJLocation &7> &eCountry: {country}"
+  - "&6&lJLocation &7> &eCity: {city}"
+  - "&6&lJLocation &7> &eLat/Lon: {lat} / {lon}"
+  - "&6&lJLocation &7> &eProvider: {as}"
+  - "&6&lJLocation &7> &eProvider Name: {as_name}"
+  - "&6&lJLocation &7> &eRegion Name: {region_name}"
+  - "&6&lJLocation &7> &eISP: {isp}"
+  - ""
