@@ -1,14 +1,14 @@
 package com.josemarcellio.jlocation.util;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonReader;
 import com.josemarcellio.jlocation.location.Location;
 
-import java.io.BufferedReader;
+import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 public class LocationUtils {
 
@@ -25,21 +25,15 @@ public class LocationUtils {
             connection.setRequestMethod("GET");
 
             int responseCode = connection.getResponseCode();
+
             if (responseCode == 200) {
+                BufferedInputStream in = new BufferedInputStream(
+                        connection.getInputStream());
 
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(
-                                connection.getInputStream()));
+                JsonReader reader = new JsonReader(
+                        new InputStreamReader(in, StandardCharsets.UTF_8));
+                return getLocationFromResponse(reader);
 
-                String line;
-                StringBuilder response = new StringBuilder();
-
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
-                }
-                reader.close();
-                return getLocationFromResponse(
-                        response.toString());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -47,39 +41,52 @@ public class LocationUtils {
         return null;
     }
 
-    @SuppressWarnings("deprecation")
     private static Location getLocationFromResponse(
-            String response) {
+            JsonReader reader) throws IOException {
 
-        JsonElement element = new JsonParser()
-                .parse(response);
+        String city = "Unknown";
+        String region = "Unknown";
+        String country = "Unknown";
+        String isp = "Unknown";
+        String as = "Unknown";
+        String asname = "Unknown";
+        String lat = "Unknown";
+        String lon = "Unknown";
+        reader.beginObject();
+        while (reader.hasNext()) {
 
-        JsonObject object = element.getAsJsonObject();
-
-        String city = object.get("city") == null
-                ? "Unknown" : object.get("city").getAsString();
-
-        String region = object.get("regionName") == null
-                ? "Unknown" : object.get("regionName").getAsString();
-
-        String country = object.get("country") == null
-                ? "Unknown" : object.get("country").getAsString();
-
-        String isp = object.get("isp") == null
-                ? "Unknown" : object.get("isp").getAsString();
-
-        String as = object.get("as") == null
-                ? "Unknown" : object.get("as").getAsString();
-
-        String asname = object.get("asname") == null
-                ? "Unknown" : object.get("asname").getAsString();
-
-        String lat = object.get("lat") == null
-                ? "Unknown" : object.get("lat").getAsString();
-
-        String lon = object.get("lon") == null
-                ? "Unknown" : object.get("lon").getAsString();
-
+            String name = reader.nextName();
+            switch (name) {
+                case "city":
+                    city = reader.nextString();
+                    break;
+                case "regionName":
+                    region = reader.nextString();
+                    break;
+                case "country":
+                    country = reader.nextString();
+                    break;
+                case "isp":
+                    isp = reader.nextString();
+                    break;
+                case "as":
+                    as = reader.nextString();
+                    break;
+                case "asname":
+                    asname = reader.nextString();
+                    break;
+                case "lat":
+                    lat = reader.nextString();
+                    break;
+                case "lon":
+                    lon = reader.nextString();
+                    break;
+                default:
+                    reader.skipValue();
+                    break;
+            }
+        }
+        reader.endObject();
         return new Location(city, region, country,
                 isp, as, asname, lat, lon);
     }

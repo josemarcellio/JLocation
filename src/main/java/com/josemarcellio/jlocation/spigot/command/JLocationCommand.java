@@ -37,7 +37,8 @@ public class JLocationCommand
 
                 if (targetPlayer != null) {
 
-                    String ip = "182.253.163.62";
+                    String ip = targetPlayer.getAddress().getAddress()
+                            .getHostAddress();
                     Location location = LocationUtils.getLocation(ip);
 
                     if (location != null) {
